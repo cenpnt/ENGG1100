@@ -1,4 +1,4 @@
-# ENG1100
+# ENGG1100
 
 Built using Arduino IDE:
 
@@ -12,4 +12,5 @@ esp32_bluepad32 by Ricardo Quesada
 
 Arduino IDE libraries include:
     - AccelStepper
+
     - 
