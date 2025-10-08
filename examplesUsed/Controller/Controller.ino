@@ -1,6 +1,15 @@
 #include <Bluepad32.h>
+#include <AccelStepper.h>
+
+#define MOTOR1_PIN1 15
+#define MOTOR1_PIN2 2
+#define MOTOR1_PIN3 0
+#define MOTOR1_PIN4 4
+
+AccelStepper stepper1(AccelStepper::HALF4WIRE, MOTOR1_PIN1, MOTOR1_PIN3, MOTOR1_PIN2, MOTOR1_PIN4);
 
 ControllerPtr myControllers[BP32_MAX_GAMEPADS];
+bool run_motor = false;
 
 #pragma region BluePad32_code
 // This callback gets called any time a new gamepad is connected.
@@ -131,6 +140,9 @@ void processGamepad(ControllerPtr ctl) {
     // By query each button individually:
     //  a(), b(), x(), y(), l1(), etc...
     if (ctl->a()) {
+        run_motor = true;
+        digitalWrite(16, HIGH);
+
         static int colorIdx = 0;
         // Some gamepads like DS4 and DualSense support changing the color LED.
         // It is possible to change it by calling:
@@ -149,6 +161,9 @@ void processGamepad(ControllerPtr ctl) {
                 break;
         }
         colorIdx++;
+    } else {
+        run_motor = false;
+        digitalWrite(16, LOW);
     }
 
     if (ctl->b()) {
@@ -269,6 +284,13 @@ void setup() {
     // - Second one, which is a "virtual device", is a mouse.
     // By default, it is disabled.
     BP32.enableVirtualDevice(false);
+
+    stepper1.setMaxSpeed(30000);
+    // stepper1.setAcceleration(1000.0);
+    // stepper1.moveTo(1000000);
+    stepper1.setSpeed(1000);
+
+    pinMode(16,OUTPUT);
 }
 
 // Arduino loop function. Runs in CPU 1.
@@ -276,10 +298,19 @@ void loop() {
     // This call fetches all the controllers' data.
     // Call this function in your main loop.
     bool dataUpdated = BP32.update();
-    if (dataUpdated)
+    if (dataUpdated) {
         processControllers();
+    }
 
-    // daa
+    // the above if statement only executes when the 
+    // controller detects changes in input and sends an update packet.
+    // so, any code that must run as often as possible should run here.
+
+    if (run_motor) {
+        stepper1.runSpeed();
+    }
+    // stepper1.setSpeed(1000);
+    // stepper1.runSpeed();
 
     // The main loop must have some kind of "yield to lower priority task" event.
     // Otherwise, the watchdog will get triggered.
@@ -289,5 +320,5 @@ void loop() {
 
         // vTaskDelay(1);
         
-    delay(150);
+    // delay(150);
 }

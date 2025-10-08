@@ -24,7 +24,7 @@ void setup()
     // stepper1.moveTo(24);
     
     stepper2.setMaxSpeed(300.0);
-    stepper2.setAcceleration(100.0);
+    stepper2.setAcceleration(1000.0);
     stepper2.moveTo(1000000);
     
     // stepper3.setMaxSpeed(300.0);

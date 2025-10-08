@@ -12,5 +12,4 @@ esp32_bluepad32 by Ricardo Quesada
 
 Arduino IDE libraries include:
     - AccelStepper
-
-    - 
+    - Bluepad32
