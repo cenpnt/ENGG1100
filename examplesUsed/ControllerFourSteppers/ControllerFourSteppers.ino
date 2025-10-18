@@ -110,10 +110,12 @@ void onDisconnectedController(ControllerPtr ctl) {
 // ====== Controller processing ======
 void processGamepad(ControllerPtr ctl) {
   // Buttons for control
-  if (ctl->a()) {
-    static bool prevA = false;
-    if (!prevA) { // edge
-      motorsEnabled = !motorsEnabled;
+  // if (ctl->a()) {
+  if (ctl->brake()>800 && ctl->throttle()>800) {
+    // static bool prevA = false;
+    // if (!prevA) { // edge
+      // motorsEnabled = !motorsEnabled;
+      motorsEnabled = true;
       applyEnablePin();
       // Visual feedback if supported
       if (motorsEnabled)
@@ -124,19 +126,22 @@ void processGamepad(ControllerPtr ctl) {
       if (motorsEnabled) {
         setRelay(true);
         lastActiveMs = millis();
+    // prevA = true;
       }
-    }
-    prevA = true;
+    // }
   } else {
-    static bool prevA = false; prevA = false;
+    // static bool prevA = false; prevA = false;
+    motorsEnabled =false;
   }
 
   if (ctl->b()) {
     stopAll();
+    motorsEnabled = false;
   }
 
   if (ctl->x()) {
     ctl->playDualRumble(0, 200, 0x60, 0x60);
+    Serial.println("rumbled.");
   }
 
   // Read sticks

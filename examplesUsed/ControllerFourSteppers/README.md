@@ -39,7 +39,7 @@ Notes:
 
 ## Controls (gamepad)
 
-- A: Toggle motors enabled/disabled (logical enable). When enabled or moving, relay turns ON. When idle for `RELAY_IDLE_OFF_MS`, relay turns OFF.
+- throttle + brake: Toggle motors enabled/disabled (logical enable). When enabled or moving, relay turns ON. When idle for `RELAY_IDLE_OFF_MS`, relay turns OFF.
 - B: Stop all motors immediately.
 - X: Short rumble feedback (if supported by the controller).
 - Left stick Y: Controls speed/direction of motors 0 & 1 (up = forward).
