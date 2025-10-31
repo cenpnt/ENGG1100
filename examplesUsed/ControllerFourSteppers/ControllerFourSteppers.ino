@@ -10,14 +10,14 @@ static const int N_MOTORS = 4;
 // IMPORTANT: AccelStepper expects pins in this order for 4-wire modes: 1,3,2,4
 // So for each motor, map as: {IN1, IN3, IN2, IN4}
 static const int MOTOR_PINS[N_MOTORS][4] = {
-  // M0: IN1, IN3, IN2, IN4
   {14, 26, 25, 27},
-  // M1
-  {32, 16, 33, 17},
-  // M2
-  {13, 12, 18, 21}, // freed GPIO19 for relay; note: GPIO12 is a strapping pin, avoid external pulls at boot
-  // M3 (uses 22,23 and 4,5; some boards strap these—adjust if boot issues)
-  {22, 4, 23, 5}
+  {33, 35, 32, 34},
+  // M0, M1
+  {15,0,2,4},
+  // M2, M3
+  {16,5,17,18}
+  // freed GPIO19 for relay; note: GPIO12 is a strapping pin, avoid external pulls at boot
+  // M2, M3 (uses 22,23 and 4,5; some boards strap these—adjust if boot issues)
 };
 
 // Motion tuning
@@ -41,7 +41,6 @@ static const bool RELAY_ACTIVE_HIGH = true;   // set to false if your relay modu
 static const unsigned long RELAY_IDLE_OFF_MS = 3000; // turn off power after this many ms of idle
 static bool relayOn = false;
 static unsigned long lastActiveMs = 0;
-
 // ====== Helpers ======
 static inline float clampf(float v, float lo, float hi) {
   return v < lo ? lo : (v > hi ? hi : v);
@@ -158,9 +157,9 @@ void processGamepad(ControllerPtr ctl) {
 
   if (motorsEnabled) {
     // Map: left stick -> motors 0 and 1, right stick -> motors 2 and 3
-    steppers[0].setSpeed(vL);
-    steppers[1].setSpeed(vL);
-    steppers[2].setSpeed(vR);
+    // steppers[0].setSpeed(vL);
+    // steppers[1].setSpeed(vL);
+    steppers[2].setSpeed(vL);
     steppers[3].setSpeed(vR);
     if (vL != 0.0f || vR != 0.0f) {
       setRelay(true);
@@ -209,6 +208,15 @@ void setup() {
   // Relay pin
   pinMode(RELAY_PIN, OUTPUT);
   setRelay(false); // start with power off until commanded
+
+  pinMode(15, OUTPUT);
+  pinMode(0, OUTPUT);
+  pinMode(2, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(16, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(17, OUTPUT);
+  pinMode(18, OUTPUT);
 }
 
 void loop() {

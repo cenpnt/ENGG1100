@@ -20,9 +20,9 @@ This sketch expects pins in AccelStepper order: IN1, IN3, IN2, IN4 (important).
 
 Default GPIO mapping (adjust in `MOTOR_PINS` in the sketch):
 
-- Motor 0: IN1=GPIO14, IN3=GPIO26, IN2=GPIO25, IN4=GPIO27
-- Motor 1: IN1=GPIO32, IN3=GPIO16, IN2=GPIO33, IN4=GPIO17
-- Motor 2: IN1=GPIO13, IN3=GPIO12, IN2=GPIO18, IN4=GPIO21  (GPIO12 is a strapping pin; avoid external pulls at boot)
+- Motor 0: IN1=GPIO13, IN3=GPIO12, IN2=GPIO18, IN4=GPIO21  
+- Motor 1: IN1=GPIO13, IN3=GPIO12, IN2=GPIO18, IN4=GPIO21  GPIO12 is a strapping pin; avoid external pulls at boot)
+- Motor 2: IN1=GPIO22, IN3=GPIO4,  IN2=GPIO23, IN4=GPIO5   
 - Motor 3: IN1=GPIO22, IN3=GPIO4,  IN2=GPIO23, IN4=GPIO5   (GPIO4/5 can be special on some boards)
 
 Shared:
